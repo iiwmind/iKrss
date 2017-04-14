@@ -1,6 +1,7 @@
 #-*- coding=utf-8 -*-
 #from sqlalchemy import Column,Integer,String
 from datetime import datetime
+from werkzeug.security import generate_password_hash,check_password_hash
 from . import db
 
 class IkssRole(db.Model):
@@ -22,6 +23,7 @@ class IkssUser(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), unique=True, index=True)
     password = db.Column(db.String(30))
+    password_hash=db.Column(db.String(256))
     email = db.Column(db.String(30))
     date = db.Column(db.Date, default=datetime.now().date(), index=True)
     time = db.Column(db.Time, default=datetime.now().time())
@@ -32,10 +34,22 @@ class IkssUser(db.Model):
     ikssuser_logs = db.relationship(
         'IkssUserLog', backref='ikssuser', lazy="dynamic")
 
-    def __init__(self, username, password, email):
+    @property
+    def password(self):
+        raise AttributeError("不能直接get密码")
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self,password):
+        return check_password_hash(self.password_hash,password)
+
+    def __init__(self, username, password, email,role):
         self.username = username
         self.password = password
         self.email = email
+        self.ikssrole_id = role
 
     def __repr__(self):
         return '<IkssUser %r>' % self.username
@@ -49,6 +63,6 @@ class IkssUserLog(db.Model):
     time = db.Column(db.Time, default=datetime.now().time())
     type = db.Column(db.String(4))
 
-    def __init__(self, type,userid):
+    def __init__(self, type,user):
         self.type = type
-        self.ikssuser_id = userid
+        self.ikssuser_id = user

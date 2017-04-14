@@ -1,8 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, SubmitField
-from wtforms.validators import Required
+from wtforms.fields import StringField, SubmitField,PasswordField
+from wtforms.validators import Required,Email,DataRequired
 
 
 class UserRegisterForm(FlaskForm):
-    name = StringField('What is your name?', validators=[Required()])
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    email = StringField('Email', validators=[Email()])
+
+
     submit = SubmitField('Submit')
+

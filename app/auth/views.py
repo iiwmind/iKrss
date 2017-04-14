@@ -4,27 +4,30 @@ import pdb
 from flask import render_template, request, session, redirect, url_for, flash
 
 from ..models import IkssUser, IkssUserLog,IkssRole
-from . import main
-from .forms import UserRegisterForm
+from . import auth
+from .forms import RegisterForm,LoginForm
 from .. import db
 
 
-@main.route('/')
-@main.route('/index')
-def index():
-    user_agent = request.headers.get('User-Agent', '')
-    return render_template("user.html", name=user_agent)
-
-
-@main.route('/user/<name>')
+@auth.route('/user/<name>')
 def user(name):
     return "Heelo, %s" % name
 
 
-@main.route('/register/', methods=['GET', 'POST'])
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    name = None
+    form = LoginForm()
+    return render_template('auth/login.html',form=form,name=name)
+
+
+
+@auth.route('/register/', methods=['GET', 'POST'])
 def register():
-    print("Method2:" + request.method)
-    form = UserRegisterForm()
+    print("Method1:" + request.method)
+    form = RegisterForm()
     if form.validate_on_submit():
         #用户名是否已经存在
         if IkssUser.query.filter_by(username=form.username.data) is not None:
