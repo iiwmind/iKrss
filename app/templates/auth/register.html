@@ -20,16 +20,11 @@
         <h1>Hello, Stranger! </h1>
         {% endif %}
     </div>
+    <!-- <li><a href="{{ url_for('main.user',name='3ee') }}">xxxx</a></li> -->
 </div>
 
 <div class="container" >
     {{ wtf.quick_form(form) }}
-
-    <p>
-    New user?
-             <a href="{{ url_for('auth.register') }}">
-                 Click here to register
-    </a> </p>
 </div>i
 
 

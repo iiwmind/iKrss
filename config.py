@@ -18,7 +18,7 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:q@127.0.0.1:3306/iKssDbDev' + "?charset=utf8"
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:q@127.0.0.1:3306/iKssDbDev' + "?charset=utf8"
     DEBUG = True
 
     MIAL_SERVER = 'smtp.googleemail.com'

@@ -13,7 +13,7 @@ from .. import db
 @main.route('/index')
 def index():
     user_agent = request.headers.get('User-Agent', '')
-    return render_template("user.html", name=user_agent)
+    return render_template("index.html", name=user_agent)
 
 
 @main.route('/user/<name>')
@@ -43,5 +43,5 @@ def register():
         session['username'] = form.username.data
         return redirect(url_for('.register'))
     return render_template(
-        "register.html", form=form, name=session.get('name'))
+        "auth/register.html", form=form, name=session.get('name'))
 

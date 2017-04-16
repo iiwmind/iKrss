@@ -2,7 +2,8 @@
 #from sqlalchemy import Column,Integer,String
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
-from . import db
+from flask_login import UserMixin
+from . import db,login_manager
 
 class IkssRole(db.Model):
     __tablename__ = "ikss_roles"
@@ -18,7 +19,8 @@ class IkssRole(db.Model):
     def __repr__(self):
         return '<IkssRole %r>' % self.role_name
 
-class IkssUser(db.Model):
+
+class IkssUser(db.Model, UserMixin):
     __tablename__ = "ikss_users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), unique=True, index=True)
@@ -53,6 +55,11 @@ class IkssUser(db.Model):
 
     def __repr__(self):
         return '<IkssUser %r>' % self.username
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return IkssUser.query.get(int(user_id))
 
 
 class IkssUserLog(db.Model):
