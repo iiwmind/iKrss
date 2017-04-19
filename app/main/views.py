@@ -3,11 +3,16 @@ import pdb
 
 from flask import render_template, request, session, redirect, url_for, flash
 
-from ..models import IkssUser, IkssUserLog,IkssRole
+from ..models import IkrssUser, IkrssUserLog,IkrssRole
 from . import main
 from .forms import UserRegisterForm
 from .. import db
 
+
+@main.before_app_first_request
+def before_app_first_request():
+    db.create_all()
+    IkrssRole.insert_roles()
 
 @main.route('/')
 @main.route('/index')
@@ -21,27 +26,4 @@ def user(name):
     return "Heelo, %s" % name
 
 
-@main.route('/register/', methods=['GET', 'POST'])
-def register():
-    print("Method2:" + request.method)
-    form = UserRegisterForm()
-    if form.validate_on_submit():
-        #用户名是否已经存在
-        if IkssUser.query.filter_by(username=form.username.data) is not None:
-            flash("用户名已经存在，请重新输入")
-            return redirect(url_for('.register'))
-
-        role = IkssRole.query.all()[0]
-        user = IkssUser(form.username.data,form.password.data,form.email.data, role.id)
-
-        db.session.add(user)
-        db.session.commit()
-
-        user_log = IkssUserLog("C",user.id)
-        db.session.add(user_log)
-        flash("用户已经切换!")
-        session['username'] = form.username.data
-        return redirect(url_for('.register'))
-    return render_template(
-        "auth/register.html", form=form, name=session.get('name'))
 
