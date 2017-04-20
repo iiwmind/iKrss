@@ -3,7 +3,7 @@ import pdb
 
 from flask import render_template, request, session, redirect, url_for, flash
 
-from ..models import IkrssUser, IkrssUserLog,IkrssRole
+from ..models import IkrssUser, IkrssUserLog,IkrssRole,IkrssRssTag
 from . import main
 from .forms import UserRegisterForm
 from .. import db
@@ -13,6 +13,7 @@ from .. import db
 def before_app_first_request():
     db.create_all()
     IkrssRole.insert_roles()
+    IkrssRssTag.insert_tags()
 
 @main.route('/')
 @main.route('/index')
