@@ -1,5 +1,5 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Flasky{% endblock %}
+{% block title %}IKRSS{% endblock %}
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
@@ -11,19 +11,22 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Flasky</a>
+            <a class="navbar-brand" href="/">IKRSS</a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+
+            <!--<ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
-            </ul>
+            </ul>  -->
 
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('auth.logout') }}">Sign Out</a></li>
+                    <li><a href="{{ url_for('user.subscribe') }}">订阅设置</a></li>
+                    <li><a href="{{ url_for('user.profile') }}">个人资料</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">注销</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-                    <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+                    <li><a href="{{ url_for('auth.register') }}">注册</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">登录</a></li>
                 {% endif %}
             </ul>
 
